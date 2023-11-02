@@ -1,2 +1,19 @@
-# finance-manager
-Vue2反诈系统后台（vue2+ELement-UI+Echarts）
+# demo
+
+## Project setup
+```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
