@@ -1,12 +1,13 @@
 <template>
-  <!-- <div id="app">
-    <button @click="testProxy">测试代理</button>
+  <div id="app">
+    <!-- <el-button type="primary" size="default" @click="testProxy">测试代理</el-button>
     <nav>
       <router-link to="/">Home</router-link>|
       <router-link to="/about">About</router-link>
-    </nav>
-  </div> -->
-  <router-view />
+    </nav>-->
+
+    <router-view />
+  </div>
 </template>
 
 <script>

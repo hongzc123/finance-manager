@@ -44,6 +44,7 @@ prefix-icon
 el-icon-user-solid
 el-icon-s-order
  */
+import { doLogin } from "@/api";
 
 export default {
   data() {
@@ -60,9 +61,15 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
-          alert("submit!");
+          let res = await doLogin(this.ruleForm);
+          console.log(res);
+          let urlParams = this.$route.query.redirect;
+          console.log(this.$route.query);
+          console.log(urlParams);
+          this.$router.push(urlParams || "/home");
+          // this.$router.push(urlParams || "/");
         } else {
           console.log("error submit!!");
           return false;
