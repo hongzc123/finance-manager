@@ -37,6 +37,10 @@ const router = new VueRouter({
   routes
 })
 
+function asyncRoutesHandler(routes) {
+  return routes
+}
+
 /**
  * 请求路由并生成路由
  */
@@ -44,7 +48,17 @@ async function loadMenu(to, next) {
   let res = await loadMenuData()
   console.log('路由数据：', res)
 
+  // 存储store
   store.commit('setMenu', res.data)
+
+  // 生成路由，并加入
+  const asyncRoutes = asyncRoutesHandler(res.data)
+  console.log(asyncRoutes)
+
+  asyncRoutes.forEach(e => {
+    router.addRoute(e)
+  })
+
   // ...to新的访问，replace: true替换老的访问
   next({ ...to, replace: true })
 }

@@ -68,8 +68,8 @@ export default {
           let urlParams = this.$route.query.redirect;
           console.log(this.$route.query);
           console.log(urlParams);
-          this.$router.push(urlParams || "/home");
-          // this.$router.push(urlParams || "/");
+          // this.$router.push(urlParams || "/home");
+          this.$router.push(urlParams || "/");
         } else {
           console.log("error submit!!");
           return false;
