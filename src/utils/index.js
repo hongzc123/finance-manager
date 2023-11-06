@@ -9,6 +9,22 @@ export const isLogin = (token) => {
     if (!token) return false;
     const decoded = jwtDecode(token);
     if (!decoded) return false
-    console.log(decoded);
+    // console.log(decoded);
     return decoded.exp * 1000 > Date.now()
+}
+
+/**
+ * 校验token是否过期
+ * @param {*} token 
+ * @param {*} time 
+ * @returns 
+ */
+export const isExpires = (token, time) => {
+    return true
+
+    if (!token) return false;
+    const decoded = jwtDecode(token);
+    if (!decoded) return false;
+
+    return decoded.exp * 1000 < Date.now() + (time * 1000);
 }

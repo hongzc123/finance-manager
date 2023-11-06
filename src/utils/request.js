@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import { refreshReqFn } from '@/utils/refreshToken'
 
 // 1.创建实例封装baseUrl和timeout
 export const request = Axios.create({
@@ -23,4 +24,7 @@ request.interceptors.response.use(response => {
     }
     return response
 })
+
+// 无感刷新token，token临近过期之前
+request.interceptors.request.use(refreshReqFn(request))
 

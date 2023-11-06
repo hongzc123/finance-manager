@@ -4,6 +4,8 @@ import HomeView from '../views/HomeView.vue'
 import { isLogin } from '@/utils'
 import store from '@/store'
 import { loadMenuData } from '@/api'
+import Layout from '@/views/Layout/index.vue';
+import NotFound from '@/views/404'
 
 Vue.use(VueRouter)
 
@@ -38,7 +40,24 @@ const router = new VueRouter({
 })
 
 function asyncRoutesHandler(routes) {
-  return routes
+  return routes.map(route => {
+    // 处理父级路由
+    if (route.component === 'Layout') {
+      route.component = Layout;
+    } else {
+      // 子路由Layout
+      // 按步骤告知webpack文件的解析路径，让其将.vue文件转化成js文件的函数
+      const filePath = route.component; // (变量的声明会触发webpack文件编译，否则会忽略，最终获得undefined)
+      // 懒加载配置
+      route.component = () => import(`../views/${filePath}.vue`)
+    }
+    // 处理子路由
+    if (route.children) {
+      route.children = asyncRoutesHandler(route.children)
+    }
+
+    return route;
+  });
 }
 
 /**
@@ -55,8 +74,15 @@ async function loadMenu(to, next) {
   const asyncRoutes = asyncRoutesHandler(res.data)
   console.log(asyncRoutes)
 
+  // 生成路由，并加入
   asyncRoutes.forEach(e => {
     router.addRoute(e)
+  })
+
+  // 组件找不到
+  router.addRoute({
+    path: '*',
+    component: NotFound
   })
 
   // ...to新的访问，replace: true替换老的访问
