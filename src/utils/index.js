@@ -20,11 +20,42 @@ export const isLogin = (token) => {
  * @returns 
  */
 export const isExpires = (token, time) => {
-    return true
-
     if (!token) return false;
     const decoded = jwtDecode(token);
     if (!decoded) return false;
 
     return decoded.exp * 1000 < Date.now() + (time * 1000);
+}
+
+/**
+ * 
+ * @param {*} asyncReq 回调函数
+ * @param {*} time 次数
+ * @param {*} delay 延迟
+ * @returns 
+ */
+export const retry = (asyncReq, time, delay) => {
+    // 最总控制
+    return new Promise((resolve, reject) => {
+        let request = async function () {
+            try {
+                let result = await asyncReq()
+                resolve(result)
+            } catch (e) {
+                // 判断是否满足次数
+                if (time-- <= 0) {
+                    return reject(time + '次重连失败...')
+                }
+                if (delay) {
+                    setTimeout(() => {
+                        request()
+                    }, delay * 1000)
+                } else {
+                    request()
+                }
+            }
+        }
+
+        request()
+    })
 }

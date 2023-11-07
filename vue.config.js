@@ -11,6 +11,12 @@ module.exports = defineConfig({
       '/baidu': {
         target: 'http://www.baidu.com'
       },
+      '/test': {
+        target: 'http://localhost:3000',
+        pathRewrite: {
+          '^/test': ''
+        }
+      },
       // 应用内的Ajax访问到了/jindu 则算命中，按照当前规则做代理
       '/jindu': {
         target: 'http://jinduedu.net:5004',
