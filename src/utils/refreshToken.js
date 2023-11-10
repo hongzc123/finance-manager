@@ -4,9 +4,9 @@ import { isExpires } from '@/utils'
 let refreshing = true;
 let cacheRequest = [];
 export const refreshReqFn = request => {
-    console.log(request)
+    // console.log(request)
     return async config => {
-        console.log(config)
+        // console.log(config)
         const token = window.sessionStorage.getItem('token')
         let needRefresh = isExpires(token, 60 * 60) //
 

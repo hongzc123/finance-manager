@@ -8,16 +8,16 @@ import Layout from '@/views/Layout/index.vue';
 import NotFound from '@/views/404'
 
 Vue.use(VueRouter)
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/home',
-    name: 'home2',
     component: HomeView
   },
   {
@@ -65,7 +65,7 @@ function asyncRoutesHandler(routes) {
  */
 async function loadMenu(to, next) {
   let res = await loadMenuData()
-  console.log('路由数据：', res)
+  // console.log('路由数据：', res)
 
   // 存储store
   store.commit('setMenu', res.data)
@@ -93,7 +93,7 @@ async function loadMenu(to, next) {
 const whiteList = ['/login', '/register']
 // to.path是基础路径，to.fullPath是包含查询字符串参数的
 router.beforeEach((to, from, next) => {
-  console.log('路由进入...', to.path)
+  // console.log('路由进入...', to.path)
   // 1.排除访问白名单，放行
   if (whiteList.includes(to.path)) return next()
 
@@ -120,5 +120,16 @@ router.beforeEach((to, from, next) => {
   // 生成路由 next, to 产生一次基于新路由的访问
   loadMenu(to, next)
 })
+
+/**
+ * 重置路由
+ */
+export const resetRoute = () => {
+  // router.matcher = createRouter().matcher
+
+  const newRouter = new VueRouter({ routes })
+  router.matcher = newRouter.matcher
+  console.log('router.matcher', router.matcher)
+}
 
 export default router

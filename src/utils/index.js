@@ -28,14 +28,23 @@ export const isExpires = (token, time) => {
 }
 
 /**
+ * 获取token信息
+ * @param {*} token 
+ * @returns 
+ */
+export const getTokenValue = token => {
+    return jwtDecode(token);
+}
+
+/**
  * 
- * @param {*} asyncReq 回调函数
+ * @param {*} asyncReq 请求
  * @param {*} time 次数
  * @param {*} delay 延迟
  * @returns 
  */
 export const retry = (asyncReq, time, delay) => {
-    // 最总控制
+    // 最终控制
     return new Promise((resolve, reject) => {
         let request = async function () {
             try {

@@ -64,10 +64,8 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let res = await doLogin(this.ruleForm);
-          console.log(res);
           let urlParams = this.$route.query.redirect;
           console.log(this.$route.query);
-          console.log(urlParams);
           // this.$router.push(urlParams || "/home");
           this.$router.push(urlParams || "/");
         } else {
