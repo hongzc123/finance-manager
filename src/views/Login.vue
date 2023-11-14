@@ -1,7 +1,13 @@
 <template>
   <div class="login-container">
     <div class="login-box center">
-      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm">
+      <el-form
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        class="demo-ruleForm"
+      >
         <el-form-item prop="account">
           <el-input
             prefix-icon="el-icon-user-solid"
@@ -21,7 +27,12 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button size="medium" type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button
+            size="medium"
+            type="primary"
+            @click="submitForm('ruleForm')"
+            >登录</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -51,23 +62,22 @@ export default {
     return {
       ruleForm: {
         account: "admin",
-        password: "approve123456."
+        password: "approve123456.",
       },
       rules: {
         password: [{ required: true, trigger: "blur", message: "请输入密码" }],
-        account: [{ required: true, trigger: "blur", message: "请输入用户名" }]
-      }
+        account: [{ required: true, trigger: "blur", message: "请输入用户名" }],
+      },
     };
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(async valid => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
           let res = await doLogin(this.ruleForm);
           let urlParams = this.$route.query.redirect;
           console.log(this.$route.query);
-          // this.$router.push(urlParams || "/home");
-          this.$router.push(urlParams || "/");
+          this.$router.push(urlParams || "/dashboard");
         } else {
           console.log("error submit!!");
           return false;
@@ -76,8 +86,8 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -122,9 +132,9 @@ export default {
   //                                大小          位置
   background-image: radial-gradient(2px 2px at 50px 200px, #eee, transparent),
     // 第二个点      大小
-      radial-gradient(3px 4px at 40px 70px, #fff, transparent),
+    radial-gradient(3px 4px at 40px 70px, #fff, transparent),
     // 第三个点
-      radial-gradient(2px 2px at 120px 40px, #ddd, transparent);
+    radial-gradient(2px 2px at 120px 40px, #ddd, transparent);
 
   //   透明度0 => 80%完全展示1 => 0
   opacity: 0;

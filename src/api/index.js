@@ -14,3 +14,9 @@ export const loadMenuData = () => {
         method: 'get'
     })
 }
+
+export const createUser = (user)=>{
+    return request.post('/loan/create',user)
+}
+
+export const logout = ()=> request.post('/user/logout');

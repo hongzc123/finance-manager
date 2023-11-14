@@ -65,7 +65,7 @@ function asyncRoutesHandler(routes) {
  */
 async function loadMenu(to, next) {
   let res = await loadMenuData()
-  // console.log('路由数据：', res)
+  console.log('路由数据：', res)
 
   // 存储store
   store.commit('setMenu', res.data)

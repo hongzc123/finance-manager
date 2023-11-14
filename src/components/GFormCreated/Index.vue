@@ -13,18 +13,18 @@ export default {
   props: {
     conf: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   data() {
     return {
-      form: {} // V2响应式: 动态添加的属性要$set
+      form: {}, // V2响应式: 动态添加的属性要$set
     };
   },
   created() {
     const { items, cards, rules } = this.conf;
     if (cards) {
-      cards.forEach(e => {
+      cards.forEach((e) => {
         this.bindProps(e.items);
       });
     } else {
@@ -35,7 +35,7 @@ export default {
     for (let key in rules) {
       const valids = rules[key];
       // console.log(key, valids);
-      valids.forEach(valid => {
+      valids.forEach((valid) => {
         if (valid.validator) {
           // console.log(valid.validator);
           // 一个函数的this只能bind一次
@@ -46,8 +46,8 @@ export default {
   },
   methods: {
     bindProps(items) {
-      items.forEach(rowArr => {
-        rowArr.forEach(col => {
+      items.forEach((rowArr) => {
+        rowArr.forEach((col) => {
           if (this.form[col.key]) throw new Error("当前key已经存在" + col.key);
           this.$set(this.form, col.key, col.value);
         });
@@ -72,7 +72,7 @@ export default {
             <el-input
               type={item.type}
               value={this.form[item.key]}
-              onInput={val => (this.form[item.key] = val)}
+              onInput={(val) => (this.form[item.key] = val)}
               attrs={item.attrs}
             ></el-input>
           );
@@ -90,7 +90,7 @@ export default {
               attrs={item.attrs}
               clearable
             >
-              {item.options.map(option => {
+              {item.options.map((option) => {
                 return (
                   <el-option
                     label={option.text}
@@ -106,7 +106,7 @@ export default {
       }
     },
     renderColumns(colArr) {
-      return colArr.map(col => {
+      return colArr.map((col) => {
         return (
           <el-col span={col.colspan}>
             <el-form-item label={col.label} size="normal" prop={col.key}>
@@ -117,7 +117,7 @@ export default {
       });
     },
     renderRows(items) {
-      return items.map(rowArr => {
+      return items.map((rowArr) => {
         return <el-row>{this.renderColumns(rowArr)}</el-row>;
       });
     },
@@ -138,16 +138,16 @@ export default {
       this.$refs.formData.resetFields();
     },
     validate(fn) {
-      this.$refs.formData.validate(valid => {
+      this.$refs.formData.validate((valid) => {
         if (valid) {
-          return fn;
+          return fn();
         }
       });
-    }
+    },
   },
   render() {
     const {
-      $scopedSlots: { default: btns }
+      $scopedSlots: { default: btns },
     } = this; // $slot.default
     const { title, items, cards, rules } = this.conf;
     let attrs = { ...this.$attrs, model: this.form, "label-width": "80px" };
@@ -162,15 +162,15 @@ export default {
           btns(deepClone(this.form)) // <slot :data="1234"></slot>
         ) : (
           <div>
-            <el-button type="primary" onClick={e => this.onSubmit()}>
+            <el-button type="primary" onClick={(e) => this.onSubmit()}>
               提交
             </el-button>
-            <el-button onClick={e => this.reset()}>重置</el-button>
+            <el-button onClick={(e) => this.reset()}>重置</el-button>
           </div>
         )}
       </div>
     );
-  }
+  },
 };
 </script>
 

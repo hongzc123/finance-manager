@@ -1,6 +1,8 @@
 import Axios from 'axios'
 import { refreshReqFn } from '@/utils/refreshToken'
 
+import { businessFn, sysExceptionFn } from './intercepts/exception'
+
 // 1.创建实例封装baseUrl和timeout
 export const request = Axios.create({
     baseURL: '/jindu',
@@ -24,6 +26,9 @@ request.interceptors.response.use(response => {
     }
     return response
 })
+
+// 处理业务异常 和 系统异常
+request.interceptors.response.use(businessFn, sysExceptionFn)
 
 // 无感刷新token，token临近过期之前
 request.interceptors.request.use(refreshReqFn(request))
