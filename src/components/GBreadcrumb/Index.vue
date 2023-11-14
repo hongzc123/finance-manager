@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="breadcrumb-wrap">
     <el-breadcrumb separator="/" :attrs="$attrs" v-on="$listeners">
       <el-breadcrumb-item
         v-for="(route, index) in matchedPaths"
@@ -40,5 +40,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.breadcrumb-wrap {
+  :deep(.el-breadcrumb__separator) {
+    color: white !important;
+  }
+}
 </style>

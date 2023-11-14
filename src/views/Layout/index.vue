@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="260px">
+      <el-aside width="200px">
         <GMenu :routeData="$store.getters.getMenu" />
       </el-aside>
       <el-container>
