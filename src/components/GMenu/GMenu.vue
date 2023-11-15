@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-menu class="el-menu-vertical-demo" :attrs="$attrs" v-on="$listeners" router>
+    <el-menu
+      class="el-menu-vertical-demo"
+      :attrs="$attrs"
+      v-on="$listeners"
+      router
+    >
       <GMenuItem v-for="(item, i) in routeData" :key="i" :routeItem="item" />
     </el-menu>
   </div>
@@ -13,16 +18,16 @@ export default {
     routeData: {
       type: Array,
       default: [],
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {};
   },
   created() {
-    console.log("$attrs", this.$attrs);
-    console.log("$listeners", this.$listeners);
-  }
+    // console.log("$attrs", this.$attrs);
+    // console.log("$listeners", this.$listeners);
+  },
 };
 </script>
 

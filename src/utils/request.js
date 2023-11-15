@@ -31,5 +31,5 @@ request.interceptors.response.use(response => {
 request.interceptors.response.use(businessFn, sysExceptionFn)
 
 // 无感刷新token，token临近过期之前
-request.interceptors.request.use(refreshReqFn(request))
+// request.interceptors.request.use(refreshReqFn(request))
 

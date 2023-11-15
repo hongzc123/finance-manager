@@ -65,14 +65,14 @@ function asyncRoutesHandler(routes) {
  */
 async function loadMenu(to, next) {
   let res = await loadMenuData()
-  console.log('路由数据：', res)
+  // console.log('路由数据：', res)
 
   // 存储store
   store.commit('setMenu', res.data)
 
   // 生成路由，并加入
   const asyncRoutes = asyncRoutesHandler(res.data)
-  console.log(asyncRoutes)
+  // console.log(asyncRoutes)
 
   // 生成路由，并加入
   asyncRoutes.forEach(e => {
@@ -138,7 +138,7 @@ export const resetRoute = () => {
 
   const newRouter = new VueRouter({ routes })
   router.matcher = newRouter.matcher
-  console.log('router.matcher', router.matcher)
+  console.log('router.matcher', newRouter, router.matcher)
 }
 
 export default router

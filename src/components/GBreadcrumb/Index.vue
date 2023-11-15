@@ -24,7 +24,7 @@ export default {
     // }
     matchedPaths() {
       let existTitle = [];
-      return this.$route.matched.filter(route => {
+      return this.$route.matched.filter((route) => {
         if (!existTitle.includes(route.meta.title)) {
           existTitle.push(route.meta.title);
           return true;
@@ -32,11 +32,11 @@ export default {
           return false;
         }
       });
-    }
+    },
   },
   created() {
-    console.log(this.$route.matched);
-  }
+    // console.log(this.$route.matched);
+  },
 };
 </script>
 

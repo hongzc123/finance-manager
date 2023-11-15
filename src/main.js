@@ -8,6 +8,8 @@ import '@/assets/css/global.css';
 import 'element-ui/lib/theme-chalk/index.css';
 
 import '@/components'
+import bindProps from '@/plugin'
+Vue.use(bindProps)
 
 Vue.config.productionTip = false
 

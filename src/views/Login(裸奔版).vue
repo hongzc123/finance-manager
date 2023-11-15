@@ -1,16 +1,40 @@
 <template>
   <div class="login-container">
     <div class="login-box center">
-      <GFormCreated :conf="loginConf" ref="ruleForm">
-        <template #default="scope">
+      <el-form
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        class="demo-ruleForm"
+      >
+        <el-form-item prop="account">
+          <el-input
+            prefix-icon="el-icon-user-solid"
+            clearable
+            placeholder="请输入用户名"
+            v-model.number="ruleForm.account"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            prefix-icon="el-icon-s-order"
+            show-password
+            placeholder="请输入密码"
+            type="password"
+            v-model="ruleForm.password"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
           <el-button
             size="medium"
             type="primary"
             @click="submitForm('ruleForm')"
             >登录</el-button
           >
-        </template>
-      </GFormCreated>
+        </el-form-item>
+      </el-form>
     </div>
 
     <div class="stars-box">
@@ -36,48 +60,13 @@ import { doLogin } from "@/api";
 export default {
   data() {
     return {
-      loginConf: {
-        "label-width": "0px",
-        items: [
-          [
-            {
-              key: "account",
-              value: "admin",
-              type: "text",
-              attrs: {
-                "prefix-icon": "el-icon-user-solid",
-                clearable: true,
-                placeholder: "请输入用户名",
-              },
-            },
-          ],
-          [
-            {
-              key: "password",
-              value: "approve123456.",
-              type: "password",
-              attrs: {
-                "prefix-icon": "el-icon-s-order",
-                "show-password": true,
-                clearable: true,
-                placeholder: "请输入密码",
-                autocomplete: "off",
-              },
-            },
-          ],
-        ],
-        rules: {
-          password: [
-            { required: true, trigger: "blur", message: "请输入密码" },
-          ],
-          account: [
-            { required: true, trigger: "blur", message: "请输入用户名" },
-          ],
-        },
-      },
       ruleForm: {
         account: "admin",
         password: "approve123456.",
+      },
+      rules: {
+        password: [{ required: true, trigger: "blur", message: "请输入密码" }],
+        account: [{ required: true, trigger: "blur", message: "请输入用户名" }],
       },
     };
   },
@@ -85,7 +74,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          let res = await doLogin(this.$refs[formName].getFormData());
+          let res = await doLogin(this.ruleForm);
           let urlParams = this.$route.query.redirect;
           console.log(this.$route.query);
           this.$router.push(urlParams || "/dashboard");
@@ -96,7 +85,7 @@ export default {
       });
     },
     resetForm(formName) {
-      this.$refs[formName].reset();
+      this.$refs[formName].resetFields();
     },
   },
 };

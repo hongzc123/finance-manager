@@ -7,7 +7,11 @@
       <el-container>
         <el-header>
           <GBreadcrumb />
-          <GDropdown :dropdownList="commandArr" :title="user.account" @command="onCommand" />
+          <GDropdown
+            :dropdownList="commandArr"
+            :title="user.account"
+            @command="onCommand"
+          />
         </el-header>
         <el-main>
           <router-view />
@@ -19,24 +23,25 @@
 </template>
 
 <script>
-import { request } from "@/utils/request";
 import Axios from "axios";
+import { request } from "@/utils/request";
 import { retryResFn } from "@/utils/retry";
 import { getTokenValue } from "@/utils";
 import { resetRoute } from "@/router";
+import { logout } from "@/api";
 
 export default {
   data() {
     return {
       commandArr: [{ command: "exit", title: "退出", icon: "el-icon-plus" }],
-      user: null
+      user: null,
     };
   },
   created() {
     this.user = getTokenValue(window.sessionStorage.getItem("token"));
 
     // 测试多次的刷新token
-    request.get("/user/info");
+    // request.get("/user/info");
     // request.get("/user/info");
     // request.get("/user/info");
 
@@ -53,24 +58,26 @@ export default {
     // retryReq.get("/slow");
   },
   methods: {
-    onCommand(event) {
+    async onCommand(event) {
       switch (event) {
         case "exit":
+          await logout();
+
           // 1.最简单的退出方式
-          window.location.reload();
-          window.sessionStorage.clear();
+          // window.location.reload();
+          // window.sessionStorage.clear();
 
           // 2.通过路由跳转，清除token
-          // window.sessionStorage.clear()
-          // resetRoute()
+          window.sessionStorage.clear();
+          resetRoute();
           // // 清除vuex的菜单
-          // this.$store.commit('setMenu', [])
+          this.$store.commit("setMenu", []);
           // // 路由重置
-          // this.$router.replace('/login')
+          this.$router.replace("/login");
           break;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

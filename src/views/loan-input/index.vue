@@ -21,6 +21,7 @@ import formConfig2 from "./formConfig2";
 import { deepClone } from "@/utils";
 import { createUser } from "@/api";
 import { SUCCESS } from "@/conf/req_fields";
+import { CONFIRM } from "@/conf";
 
 let mockData = {
   name: "",
@@ -72,19 +73,30 @@ export default {
       console.log("事件获取数据...", data);
     },
     async onSubmit2(event) {
-      console.log("通过外部的插槽获取数据... event", event);
+      console.log("通过插槽获取表单数据... event", event);
       // console.log(
-      //   "通过外部的插槽获取数据... getFormData",
+      //   "通过$refs获取表单数据... getFormData",
       //   this.$refs.form.getFormData()
       // );
-      // this.$refs.form.onSubmit();
-      const { data } = await createUser(mockData);
-      console.log(data);
-      if (data.code === SUCCESS) {
-        // 提示是否去列表查看
-        console.log("跳转列表...");
-        // todo:现实列表页面
-        this.$router.push("/列表");
+
+      // this.$refs.form.validate((valid) => {
+      //   if (valid) {
+      //     console.log("验证通过...", valid);
+      //   } else {
+      //     console.log(111);
+      //   }
+      // });
+
+      if (await this[CONFIRM]({ msg: "是否确定添加" })) {
+        console.log("确定添加");
+        const { data } = await createUser(mockData);
+        console.log(data);
+        if (data.code === SUCCESS) {
+          // 提示是否去列表查看
+          console.log("跳转列表...");
+          // todo:现实列表页面
+          // this.$router.push("/列表");
+        }
       }
     },
     reset() {

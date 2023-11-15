@@ -140,7 +140,9 @@ export default {
     validate(fn) {
       this.$refs.formData.validate((valid) => {
         if (valid) {
-          return fn();
+          return fn(valid);
+        } else {
+          return false;
         }
       });
     },
@@ -150,7 +152,12 @@ export default {
       $scopedSlots: { default: btns },
     } = this; // $slot.default
     const { title, items, cards, rules } = this.conf;
-    let attrs = { ...this.$attrs, model: this.form, "label-width": "80px" };
+    // ??空值合并，排除了'' 0 转换布尔值的过程 只针对null + undefined
+    let attrs = {
+      ...this.$attrs,
+      model: this.form,
+      "label-width": this.conf["label-width"] ?? "80px",
+    };
     return (
       <div>
         {this.renderTitle(title)}
