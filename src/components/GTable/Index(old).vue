@@ -45,15 +45,12 @@ export default {
   },
   methods: {
     // 渲染普通列
-    renderColumns(colArr, scopedSlots) {
+    renderColumns(colArr) {
       return colArr.map((col) => {
         let attrs = this.columnsConfig;
         if (col.attrs) {
           attrs = Object.assign({}, this.columnsConfig, col.attrs);
         }
-        // 给GColumn绑定this.$scopedSlots
-        return <GColumn col={col} conf={attrs} scopedSlots={scopedSlots} />;
-
         return (
           <el-table-column
             prop={col.prop}
@@ -65,10 +62,6 @@ export default {
     },
     // 渲染特定列组件
     renderSpicalColumn(type) {
-      let attrs = { type, width: "55px" };
-      if (type === "selection") attrs["reserve-selection"] = true;
-      return <GColumn conf={attrs} />;
-
       switch (type) {
         case "index":
           return <el-table-column type={type} width="55"></el-table-column>;
@@ -105,8 +98,6 @@ export default {
 
     const {
       columns: { items },
-      tableConfig,
-      $scopedSlots,
     } = this;
     const listeners = {
       on: {
@@ -116,13 +107,12 @@ export default {
     // cell-click
     // vue模板中: v-on="this.$listeners"
     console.log("$listeners", this.$listeners);
-    console.log("$scopedSlots", $scopedSlots);
 
     return (
       <div>
-        <el-table {...listeners} attrs={tableConfig} data={this.data}>
-          {this.renderSpicalColumn(tableConfig.colType)}
-          {this.renderColumns(items, $scopedSlots)}
+        <el-table {...listeners} attrs={this.tableConfig} data={this.data}>
+          {this.renderSpicalColumn(this.tableConfig.colType)}
+          {this.renderColumns(items)}
         </el-table>
         <div style="margin-top: 10px;">{this.renderPager()}</div>
       </div>
