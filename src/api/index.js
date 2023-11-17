@@ -20,3 +20,5 @@ export const createUser = (user)=>{
 }
 
 export const logout = ()=> request.post('/user/logout');
+
+export const getPersonList = params => request.get('/loan/list',{ params })

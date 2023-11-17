@@ -3,10 +3,13 @@ import { refreshReqFn } from '@/utils/refreshToken'
 
 import { businessFn, sysExceptionFn } from './intercepts/exception'
 
+import { transfer } from './dataTransform' 
+
 // 1.创建实例封装baseUrl和timeout
 export const request = Axios.create({
     baseURL: '/jindu',
-    timeout: 5000
+    timeout: 5000,
+    transformResponse: [transfer]
 })
 
 // 2.封装拦截器实现自动处理token

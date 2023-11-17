@@ -5,7 +5,11 @@ const { defineConfig } = require('@vue/cli-service')
 
 module.exports = defineConfig({
   devServer: {
-    open: true,
+    // 禁用webpack代码检查报错【不建议开发使用,看不到需要的错误提示】
+    // client: {
+    //   overlay: false,
+    // },
+    open: false,
     // http-proxy-middware
     proxy: {
       '/baidu': {

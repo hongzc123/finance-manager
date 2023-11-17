@@ -118,9 +118,17 @@ export default {
     console.log("$listeners", this.$listeners);
     console.log("$scopedSlots", $scopedSlots);
 
+    // JSX使用指令
+    const directives = [{ name: "drag", value: "" }];
+
     return (
       <div>
-        <el-table {...listeners} attrs={tableConfig} data={this.data}>
+        <el-table
+          {...{ directives }}
+          {...listeners}
+          attrs={tableConfig}
+          data={this.data}
+        >
           {this.renderSpicalColumn(tableConfig.colType)}
           {this.renderColumns(items, $scopedSlots)}
         </el-table>

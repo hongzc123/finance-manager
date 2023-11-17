@@ -11,6 +11,9 @@ import '@/components'
 import bindProps from '@/plugin'
 Vue.use(bindProps)
 
+import directives from '@/directives'
+Vue.use(directives)
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
@@ -19,3 +22,9 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+// 处理未捕获的异步异常【不建议真实开发使用】
+// window.onunhandledrejection = function(e){
+//   e.preventDefault();
+//   return false;
+// }

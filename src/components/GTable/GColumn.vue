@@ -27,14 +27,45 @@ export default {
     },
   },
   render() {
-    console.log("column-$scopedSlots", this.$scopedSlots);
+    // console.log(
+    //   "column-$scopedSlots",
+    //   this.$scopedSlots,
+    //   this.$scopedSlots.default && this.$scopedSlots.default()
+    // );
+
+    const scopedSlots = {};
+    const { conf, col, $scopedSlots } = this;
+    const { default: btn } = $scopedSlots;
+    if (col?.slot) {
+      // 当前列有插槽
+      // default
+      // btn && (scopedSlots.default = btn);
+      // btn &&
+      //  (scopedSlots.default = function (scoped) {
+      //    return btn(scoped);
+      //  });
+
+      btn &&
+        (scopedSlots.default = function (scoped) {
+          return btn({
+            ...scoped.row,
+            ...{ prop: scoped.row[col.prop], text: "test123" },
+          });
+        });
+    } else if (col?.html) {
+      scopedSlots.default = (scoped) => {
+        // return this.$createElement("h3", {}, col.html(scoped));
+        return <div domPropsInnerHTML={col.html(scoped)}></div>;
+      };
+    }
     return (
       <el-table-column
-        attrs={this.conf}
-        prop={this.col?.prop}
-        label={this.col?.label}
+        attrs={conf}
+        prop={col?.prop}
+        label={col?.label}
+        scopedSlots={scopedSlots}
       >
-        {this.renderChildren(this.col, this.conf)}
+        {this.renderChildren(col, conf)}
       </el-table-column>
     );
   },
