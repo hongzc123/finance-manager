@@ -3,7 +3,7 @@ import { SUCCESS, ERR102 } from '@/conf/req_fields'
 
 // 业务异常
 export const businessFn = response => {
-    console.log(response)
+    // console.log(response)
     if (!Array.isArray(response?.data)) {
         if (response?.data?.code !== SUCCESS) {
             Notification.warning({
@@ -24,7 +24,7 @@ export const businessFn = response => {
 
 // 系统异常
 export const sysExceptionFn = error => {
-    console.log(error)
+    // console.log(error)
     Notification.error({
         title: '系统异常',
         message: error.message

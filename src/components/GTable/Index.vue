@@ -5,17 +5,17 @@ export default {
   props: {
     data: {
       type: Array,
-      required: true,
+      required: true
     },
     columns: {
       type: Object,
       required: true,
-      default: () => ({}),
+      default: () => ({})
     },
     tableAttrs: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   computed: {
     tableConfig() {
@@ -23,7 +23,7 @@ export default {
     },
     columnsConfig() {
       return Object.assign(this.columnsConf, this.columns.attrs);
-    },
+    }
   },
   data() {
     return {
@@ -32,21 +32,21 @@ export default {
         stripe: true,
         border: true,
         emptyText: "暂无数据",
-        rowKey: "id",
+        rowKey: "id"
         // expandRowKeys: [],
         // reserveSelection: true,
         // highlightCurrentRow: true,
         // currentRowKey: "id",
       },
       columnsConf: {
-        headerAlign: "center",
-      },
+        headerAlign: "center"
+      }
     };
   },
   methods: {
     // 渲染普通列
     renderColumns(colArr, scopedSlots) {
-      return colArr.map((col) => {
+      return colArr.map(col => {
         let attrs = this.columnsConfig;
         if (col.attrs) {
           attrs = Object.assign({}, this.columnsConfig, col.attrs);
@@ -98,7 +98,7 @@ export default {
           total={400}
         ></el-pagination>
       );
-    },
+    }
   },
   render() {
     // 通过columns渲染列到el-table作为子组件
@@ -106,20 +106,20 @@ export default {
     const {
       columns: { items },
       tableConfig,
-      $scopedSlots,
+      $scopedSlots
     } = this;
     const listeners = {
       on: {
-        ...this.$listeners,
-      },
+        ...this.$listeners
+      }
     };
     // cell-click
     // vue模板中: v-on="this.$listeners"
-    console.log("$listeners", this.$listeners);
-    console.log("$scopedSlots", $scopedSlots);
+    // console.log("$listeners", this.$listeners);
+    // console.log("$scopedSlots", $scopedSlots);
 
     // JSX使用指令
-    const directives = [{ name: "drag", value: "" }];
+    const directives = [{ name: "drag", value: ".el-table__body-wrapper" }];
 
     return (
       <div>
@@ -135,7 +135,7 @@ export default {
         <div style="margin-top: 10px;">{this.renderPager()}</div>
       </div>
     );
-  },
+  }
 };
 </script>
 

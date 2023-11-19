@@ -124,7 +124,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   // 当前匹配的路由
-  console.log('router after to:', to)
+  // console.log('router after to:', to)
   // 改变document.title
   document.title = to.meta.title || ''
 })

@@ -23,7 +23,8 @@ export const isExpires = (token, time) => {
     if (!token) return false;
     const decoded = jwtDecode(token);
     if (!decoded) return false;
-
+    console.log('响应时间', decoded.exp * 1000)
+    console.log('预计过期时间', Date.now() + (time * 1000))
     return decoded.exp * 1000 < Date.now() + (time * 1000);
 }
 
