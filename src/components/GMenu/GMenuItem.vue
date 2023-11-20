@@ -1,14 +1,21 @@
 <template>
   <div>
-    <!-- 有children的sub -->
-    <el-submenu :index="routeItem.path" v-if="routeItem.children">
+    <!-- 有children的sub，nonRenderChild特殊属性处理重复的首页 -->
+    <el-submenu
+      :index="routeItem.path"
+      v-if="routeItem.children && !routeItem.nonRenderChild"
+    >
       <template #title>
         <i v-if="routeItem.meta.icon" :class="routeItem.meta.icon"></i>
         <span v-text="routeItem.meta.title"></span>
       </template>
       <template #default>
         <!-- 递归组件 -->
-        <GMenuItem v-for="(item, i) in routeItem.children" :key="i" :routeItem="item" />
+        <GMenuItem
+          v-for="(item, i) in routeItem.children"
+          :key="i"
+          :routeItem="item"
+        />
       </template>
     </el-submenu>
 
@@ -25,9 +32,9 @@ export default {
   props: {
     routeItem: {
       type: Object,
-      default: () => {}
-    }
-  }
+      default: () => {},
+    },
+  },
 };
 </script>
 

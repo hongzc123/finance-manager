@@ -8,7 +8,7 @@ export const refreshReqFn = request => {
     return async config => {
         // console.log(config)
         const token = window.sessionStorage.getItem('token')
-        let needRefresh = isExpires(token, 30) //半小时的自动刷新token
+        let needRefresh = isExpires(token, 0) //半小时的自动刷新token
 
         // 测试代码，避免登录时首次调用login后，needRefresh为true需要刷新token
         // 无限调用login接口

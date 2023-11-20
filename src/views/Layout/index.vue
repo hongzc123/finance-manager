@@ -25,7 +25,7 @@
 <script>
 import Axios from "axios";
 import { request } from "@/utils/request";
-import { retryResFn } from "@/utils/retry";
+import { retryResFn } from "@/utils/intercepts/retry";
 import { getTokenValue } from "@/utils";
 import { resetRoute } from "@/router";
 import { logout } from "@/api";
@@ -41,17 +41,18 @@ export default {
     this.user = getTokenValue(window.sessionStorage.getItem("token"));
 
     // 测试多次的刷新token
-    // request.get("/user/info");
-    // request.get("/user/info");
-    // request.get("/user/info");
+    request.get("/user/info", { loading: true });
+    request.get("/user/info", { loading: true });
+    request.get("/user/info", { loading: true });
+    // request.get("/slow", { loading: true });
 
     // let retryReq = Axios.create({
     //   baseURL: "/test",
-    //   timeout: 3000
+    //   timeout: 3000,
     // });
     // // 重连拦截器
     // retryReq.interceptors.response.use(
-    //   response => response,
+    //   (response) => response,
     //   retryResFn(retryReq)
     // );
     // // 自动重连
@@ -70,9 +71,9 @@ export default {
           // 2.通过路由跳转，清除token
           window.sessionStorage.clear();
           resetRoute();
-          // // 清除vuex的菜单
+          // 清除vuex的菜单
           this.$store.commit("setMenu", []);
-          // // 路由重置
+          // 路由重置
           this.$router.replace("/login");
           break;
       }
@@ -110,4 +111,4 @@ export default {
 .el-main {
   background-color: #e9eef3;
 }
-</style>
+</style>@/utils/intercepts/retry

@@ -1,5 +1,13 @@
 import Axios from 'axios'
-import { refreshReqFn } from '@/utils/refreshToken'
+import { refreshReqFn } from './intercepts/refreshToken'
+
+import {
+    duplicateReq,
+    duplicateRes,
+    duplicateErr
+} from './intercepts/duplicateRequest'
+
+import { openLoading, closeLoading, closeLoadingOnErr } from './intercepts/loading'
 
 import { businessFn, sysExceptionFn } from './intercepts/exception'
 
@@ -30,9 +38,21 @@ request.interceptors.response.use(response => {
     return response
 })
 
-// 处理业务异常 和 系统异常
-request.interceptors.response.use(businessFn, sysExceptionFn)
+// 1.请求去重
+request.interceptors.request.use(duplicateReq)
+request.interceptors.response.use(duplicateRes, duplicateErr)
 
+// 2.loading控制
+request.interceptors.request.use(openLoading)
+request.interceptors.response.use(closeLoading, closeLoadingOnErr)
+
+// 处理业务异常 和 系统异常
+// request.interceptors.response.use(businessFn, sysExceptionFn)
+
+// 4.无感刷新token(依赖3的结果)
 // 无感刷新token，token临近过期之前
 request.interceptors.request.use(refreshReqFn(request))
+
+// request.interceptors.request.use(duplicateReq)
+// request.interceptors.response.use(duplicateRes, duplicateErr)
 

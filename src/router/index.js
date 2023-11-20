@@ -126,7 +126,21 @@ router.afterEach((to, from) => {
   // 当前匹配的路由
   // console.log('router after to:', to)
   // 改变document.title
-  document.title = to.meta.title || ''
+  // document.title = to.meta.title || ''
+
+  // 改变documnent.title
+  let str = '反诈'
+  for (let i = 0; i < to.matched.length; i++) {
+    let route = to.matched[i];
+    let prev = to.matched[i-1];
+    // 如果上个合这个一样则跳过
+    if (prev && prev?.meta?.title === route?.meta?.title)continue;
+
+    if (route?.meta?.title) {
+      str += '-' + route?.meta?.title
+    }
+  }
+  document.title = str;
 })
 
 
