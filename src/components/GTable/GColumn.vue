@@ -4,12 +4,12 @@ export default {
   props: {
     col: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     conf: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   data() {
     return {};
@@ -20,11 +20,11 @@ export default {
       if (!col) return null;
       return (
         col?.children &&
-        col?.children.map((child) => {
+        col?.children.map(child => {
           return <GColumn col={child} conf={conf} />;
         })
       );
-    },
+    }
   },
   render() {
     // console.log(
@@ -32,22 +32,22 @@ export default {
     //   this.$scopedSlots,
     //   this.$scopedSlots.default && this.$scopedSlots.default()
     // );
+    // console.log("$scopedSlots", $scopedSlots);
 
     const scopedSlots = {};
     const { conf, col, $scopedSlots } = this;
-    console.log("$scopedSlots", $scopedSlots);
     const slot = $scopedSlots[col?.prop];
     if (slot) {
       // 当前列有插槽
       // default
-      scopedSlots.default = function (scoped) {
+      scopedSlots.default = function(scoped) {
         return slot({
           ...scoped.row,
-          ...{ prop: scoped.row[col.prop], text: "test123" },
+          ...{ prop: scoped.row[col.prop], text: "test123" }
         });
       };
     } else if (col?.html) {
-      scopedSlots.default = (scoped) => {
+      scopedSlots.default = scoped => {
         // return this.$createElement("h3", {}, col.html(scoped));
         return <div domPropsInnerHTML={col.html(scoped)}></div>;
       };
@@ -62,7 +62,7 @@ export default {
         {this.renderChildren(col, conf)}
       </el-table-column>
     );
-  },
+  }
 };
 </script>
 

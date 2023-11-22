@@ -6,26 +6,26 @@ import GTableWrapper from "./GTableWrapper.vue";
 export default {
   name: "GTable",
   components: {
-    "el-table": GTableWrapper,
+    "el-table": GTableWrapper
   },
   props: {
     data: {
       type: Array,
-      required: true,
+      required: true
     },
     columns: {
       type: Object,
       required: true,
-      default: () => ({}),
+      default: () => ({})
     },
     tableAttrs: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     pager: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   computed: {
     tableConfig() {
@@ -33,7 +33,7 @@ export default {
     },
     columnsConfig() {
       return Object.assign(this.columnsConf, this.columns.attrs);
-    },
+    }
   },
   data() {
     return {
@@ -42,7 +42,7 @@ export default {
         stripe: true,
         border: true,
         emptyText: "暂无数据",
-        rowKey: "id",
+        rowKey: "id"
         // expandRowKeys: [],
         // reserveSelection: true,
         // highlightCurrentRow: true,
@@ -50,14 +50,14 @@ export default {
       },
       columnsConf: {
         headerAlign: "center",
-        align: "center",
-      },
+        align: "center"
+      }
     };
   },
   methods: {
     // 渲染普通列
     renderColumns(colArr, childrenScopedSlots) {
-      return colArr.map((col) => {
+      return colArr.map(col => {
         let attrs = this.columnsConfig;
         if (col.attrs) {
           attrs = Object.assign({}, this.columnsConfig, col.attrs);
@@ -102,8 +102,8 @@ export default {
       return (
         <el-pagination
           key={Math.random()}
-          onSize-change={(v) => this.$emit("size-change", v)}
-          onCurrent-change={(v) => this.$emit("current-change", v)}
+          onSize-change={v => this.$emit("size-change", v)}
+          onCurrent-change={v => this.$emit("current-change", v)}
           current-page={pager.pageNo}
           page-sizes={pager.pageSizes}
           page-size={pager.pageSize}
@@ -114,7 +114,7 @@ export default {
     },
     getSelection() {
       return deepClone(this.selection);
-    },
+    }
   },
   render() {
     // 通过columns渲染列到el-table作为子组件
@@ -125,11 +125,11 @@ export default {
       $slots,
       $scopedSlots,
       $parent: { loading },
-      pager,
+      pager
     } = this;
 
-    console.log("$slots", $slots);
-    console.log("$scopedSlots", $scopedSlots);
+    // console.log("$slots", $slots);
+    // console.log("$scopedSlots", $scopedSlots);
 
     // cell-click
     // vue模板中: v-on="this.$listeners"
@@ -139,17 +139,17 @@ export default {
       //   ...this.$listeners,
       // },
       on: {
-        "selection-change": (e) => {
+        "selection-change": e => {
           // this.$emit("selection-change", e);
           this.selection = e;
-        },
-      },
+        }
+      }
     };
 
     // JSX使用指令
     const directives = [
       { name: "drag", value: ".el-table__body-wrapper" },
-      { name: "loading", value: loading },
+      { name: "loading", value: loading }
     ];
 
     const childrenScopedSlots = deepClone($scopedSlots);
@@ -161,7 +161,7 @@ export default {
           {...listeners}
           attrs={tableConfig}
           data={data}
-          scopedSlots={this.$scopedSlots}
+          scopedSlots={$scopedSlots}
         >
           {this.renderSpicalColumn(tableConfig.colType)}
           {this.renderColumns(items, childrenScopedSlots)}
@@ -169,7 +169,7 @@ export default {
         <div style="margin-top: 10px;">{this.renderPager(pager)}</div>
       </div>
     );
-  },
+  }
 };
 </script>
 
