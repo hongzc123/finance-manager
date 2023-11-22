@@ -1,10 +1,13 @@
 export const columns = {
-    items:Object.freeze([
+    // attrs: {
+    //     align: 'center'
+    // },
+    items: Object.freeze([
         {
             prop: 'birthday',
             label: '出生日期',
             width: 120,
-            filter:'convertDate'
+            filter: 'convertDate'
         },
         {
             prop: 'name',
@@ -14,17 +17,17 @@ export const columns = {
         {
             label: '性别',
             prop: 'sex',
-            filter:'common'
+            filter: 'common'
         },
         {
             prop: 'education',
             label: '教育程度',
-            filter:'common'
+            filter: 'common'
         },
         {
             prop: 'address1',
             label: '居住地址',
-    
+
         },
         {
             prop: 'mobile_phone',
@@ -33,12 +36,13 @@ export const columns = {
         {
             label: '申请状态',
             prop: 'status',
-            width:100
+            width: 100
         },
         {
             label: '操作',
             prop: 'operation',
             width: 300,
+            slot: true
         },
         {
             label: '配送信息',
@@ -57,7 +61,7 @@ export const columns = {
             width: 400,
             label: '显示html',
             prop: 'name',
-            filter:'common',
+            filter: 'common',
             html(scoped) {
                 return `<div>
                 <h2>${scoped.row.name}这是自定义html</h2>
@@ -66,4 +70,10 @@ export const columns = {
             }
         }
     ])
+}
+
+export const pager = {
+    pageNo: 1,
+    pageSize: 10,
+    pageSizes: [10, 20, 30, 40]
 }

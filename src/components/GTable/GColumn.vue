@@ -35,23 +35,17 @@ export default {
 
     const scopedSlots = {};
     const { conf, col, $scopedSlots } = this;
-    const { default: btn } = $scopedSlots;
-    if (col?.slot) {
+    console.log("$scopedSlots", $scopedSlots);
+    const slot = $scopedSlots[col?.prop];
+    if (slot) {
       // 当前列有插槽
       // default
-      // btn && (scopedSlots.default = btn);
-      // btn &&
-      //  (scopedSlots.default = function (scoped) {
-      //    return btn(scoped);
-      //  });
-
-      btn &&
-        (scopedSlots.default = function (scoped) {
-          return btn({
-            ...scoped.row,
-            ...{ prop: scoped.row[col.prop], text: "test123" },
-          });
+      scopedSlots.default = function (scoped) {
+        return slot({
+          ...scoped.row,
+          ...{ prop: scoped.row[col.prop], text: "test123" },
         });
+      };
     } else if (col?.html) {
       scopedSlots.default = (scoped) => {
         // return this.$createElement("h3", {}, col.html(scoped));

@@ -41,9 +41,9 @@ export default {
     this.user = getTokenValue(window.sessionStorage.getItem("token"));
 
     // 测试多次的刷新token
-    request.get("/user/info", { loading: true });
-    request.get("/user/info", { loading: true });
-    request.get("/user/info", { loading: true });
+    // request.get("/user/info", { loading: true });
+    // request.get("/user/info", { loading: true });
+    // request.get("/user/info", { loading: true });
     // request.get("/slow", { loading: true });
 
     // let retryReq = Axios.create({

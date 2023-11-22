@@ -18,7 +18,8 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    // compo"nent: HomeView
+    redirect: '/dashboard',
   },
   {
     path: '/about',

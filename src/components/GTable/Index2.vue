@@ -1,13 +1,7 @@
 
 <script>
-import { deepClone } from "@/utils";
-import GTableWrapper from "./GTableWrapper.vue";
-
 export default {
   name: "GTable",
-  components: {
-    "el-table": GTableWrapper,
-  },
   props: {
     data: {
       type: Array,
@@ -19,10 +13,6 @@ export default {
       default: () => ({}),
     },
     tableAttrs: {
-      type: Object,
-      default: () => ({}),
-    },
-    pager: {
       type: Object,
       default: () => ({}),
     },
@@ -50,22 +40,19 @@ export default {
       },
       columnsConf: {
         headerAlign: "center",
-        align: "center",
       },
     };
   },
   methods: {
     // 渲染普通列
-    renderColumns(colArr, childrenScopedSlots) {
+    renderColumns(colArr, scopedSlots) {
       return colArr.map((col) => {
         let attrs = this.columnsConfig;
         if (col.attrs) {
           attrs = Object.assign({}, this.columnsConfig, col.attrs);
         }
         // 给GColumn绑定this.$scopedSlots
-        return (
-          <GColumn col={col} conf={attrs} scopedSlots={childrenScopedSlots} />
-        );
+        return <GColumn col={col} conf={attrs} scopedSlots={scopedSlots} />;
 
         return (
           <el-table-column
@@ -98,61 +85,42 @@ export default {
       }
     },
     // 渲染分页
-    renderPager(pager) {
+    renderPager() {
       return (
         <el-pagination
           key={Math.random()}
-          onSize-change={(v) => this.$emit("size-change", v)}
-          onCurrent-change={(v) => this.$emit("current-change", v)}
-          current-page={pager.pageNo}
-          page-sizes={pager.pageSizes}
-          page-size={pager.pageSize}
+          onSize-change={() => {}}
+          onCurrent-change={() => {}}
+          current-page={1}
+          page-sizes={[100, 200, 300, 400]}
+          page-size={100}
           layout="total, sizes, prev, pager, next, jumper"
-          total={pager.rows}
+          total={400}
         ></el-pagination>
       );
-    },
-    getSelection() {
-      return deepClone(this.selection);
     },
   },
   render() {
     // 通过columns渲染列到el-table作为子组件
     const {
-      data,
       columns: { items },
       tableConfig,
-      $slots,
       $scopedSlots,
-      $parent: { loading },
-      pager,
     } = this;
 
-    console.log("$slots", $slots);
-    console.log("$scopedSlots", $scopedSlots);
+    // console.log("$scopedSlots", $scopedSlots);
 
     // cell-click
     // vue模板中: v-on="this.$listeners"
     // console.log("$listeners", this.$listeners);
     const listeners = {
-      // on: {
-      //   ...this.$listeners,
-      // },
       on: {
-        "selection-change": (e) => {
-          // this.$emit("selection-change", e);
-          this.selection = e;
-        },
+        ...this.$listeners,
       },
     };
 
     // JSX使用指令
-    const directives = [
-      { name: "drag", value: ".el-table__body-wrapper" },
-      { name: "loading", value: loading },
-    ];
-
-    const childrenScopedSlots = deepClone($scopedSlots);
+    const directives = [{ name: "drag", value: ".el-table__body-wrapper" }];
 
     return (
       <div>
@@ -160,13 +128,12 @@ export default {
           {...{ directives }}
           {...listeners}
           attrs={tableConfig}
-          data={data}
-          scopedSlots={this.$scopedSlots}
+          data={this.data}
         >
           {this.renderSpicalColumn(tableConfig.colType)}
-          {this.renderColumns(items, childrenScopedSlots)}
+          {this.renderColumns(items, $scopedSlots)}
         </el-table>
-        <div style="margin-top: 10px;">{this.renderPager(pager)}</div>
+        <div style="margin-top: 10px;">{this.renderPager()}</div>
       </div>
     );
   },

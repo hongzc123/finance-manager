@@ -4,6 +4,7 @@ let service = {}
 
 export const openLoading = config => {
     if (config?.loading) {
+        // console.log('openLoading:', config)
         // 需要指定全局loading
         service = Loading.service()
     }

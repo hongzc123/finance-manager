@@ -47,7 +47,7 @@ request.interceptors.request.use(openLoading)
 request.interceptors.response.use(closeLoading, closeLoadingOnErr)
 
 // 处理业务异常 和 系统异常
-// request.interceptors.response.use(businessFn, sysExceptionFn)
+request.interceptors.response.use(businessFn, sysExceptionFn)
 
 // 4.无感刷新token(依赖3的结果)
 // 无感刷新token，token临近过期之前

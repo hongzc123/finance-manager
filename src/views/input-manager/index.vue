@@ -1,51 +1,88 @@
 <template>
   <div>
-    <GTable @cell-click="cellClick" :data="showList" :tableAttrs="tableAttrs" :columns="columns">
-      <template #default="row">
-        <el-button size="mini">Edit {{ row.date }} {{ row.text }}</el-button>
+    <GTable
+      ref="table"
+      @cell-click="cellClick"
+      :data="showList"
+      :tableAttrs="tableAttrs"
+      :columns="columns"
+      :pager="pager"
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      @selection-change="selectionChange"
+    >
+      <template #operation="row">
+        <el-button size="mini" @click="showEdit(row)">Edit</el-button>
+      </template>
+
+      <!-- append插槽 -->
+      <template #append>
+        <h2 style="display: flex; justify-content: space-between">
+          <span>行尾</span>
+          <span>合计: 123</span>
+        </h2>
       </template>
     </GTable>
   </div>
 </template>
 
 <script>
-import { columns } from "./conf";
+import { columns, pager } from "./conf";
 import { getPersonList } from "@/api";
 
 export default {
-  async created() {
-    let pager = {
-      pageNo: 1,
-      pageSize: 10
-      // name:''  // 查询关键字
-    };
-    let res = await getPersonList(pager);
-    this.tableData = res.data.list;
-    // console.log(res, "res");
-  },
   data() {
     return {
-      start: 0,
-      end: 10,
-      pager: {},
+      pager: {
+        ...pager, // pageNo:1 pageSize:10
+      },
+      columns,
       tableData: [],
       tableAttrs: {
         stripe: false,
-        colType: "selection"
+        colType: "selection",
       },
-      columns
     };
   },
   computed: {
     showList() {
-      return this.tableData.slice(this.start, this.end);
-    }
+      return this.tableData;
+    },
   },
   methods: {
     cellClick(e) {
       console.log("cellClick", e);
-    }
-  }
+    },
+    showEdit() {
+      const selection = this.$refs.table.getSelection();
+      console.log(selection);
+    },
+    selectionChange(e) {
+      console.log("selectionChange", e);
+    },
+    sizeChange(v) {
+      // console.log("sizeChange", v);
+      this.pager.pageSize = v;
+      this.pager.pageNo = 1;
+      this.load();
+    },
+    currentChange(v) {
+      // console.log("currentChange", v);
+      this.pager.pageNo = v;
+      this.load();
+    },
+    async load() {
+      this.loading = true;
+      const res = await getPersonList(this.pager);
+      // console.log("getPersonList:", res);
+      this.loading = false;
+      this.tableData = res.data.list;
+      this.pager.rows = res.data.pager.rows;
+    },
+  },
+  created() {
+    this.load();
+  },
 };
 </script>
 
