@@ -14,6 +14,9 @@ Vue.use(bindProps)
 import directives from '@/directives'
 Vue.use(directives)
 
+import filters from '@/filters'
+Vue.use(filters)
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);

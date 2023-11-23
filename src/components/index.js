@@ -9,6 +9,7 @@ import GTable from './GTable/Index.vue'
 import GColumn from './GTable/GColumn.vue'
 import GChart from './GChart/Index.vue'
 import GQuery from './GQuery/Index.vue'
+import GNotifyBtn from './GNotifyBtn/Index.vue'
 
 Vue.component(GMenu.name, GMenu)
 Vue.component(GMenuItem.name, GMenuItem)
@@ -20,3 +21,4 @@ Vue.component(GTable.name, GTable)
 Vue.component(GColumn.name, GColumn)
 Vue.component(GChart.name, GChart)
 Vue.component(GQuery.name, GQuery)
+Vue.component(GNotifyBtn.name, GNotifyBtn)

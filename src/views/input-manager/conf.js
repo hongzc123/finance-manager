@@ -27,14 +27,13 @@ export const columns = {
         {
             prop: 'address1',
             label: '居住地址',
-
         },
         {
             prop: 'mobile_phone',
             label: '手机号',
         },
         {
-            label: '申请状态',
+            label: '案件状态',
             prop: 'status',
             width: 100
         },
@@ -59,7 +58,7 @@ export const columns = {
         },
         {
             width: 400,
-            label: '显示html',
+            label: '备注信息',
             prop: 'name',
             filter: 'common',
             html(scoped) {

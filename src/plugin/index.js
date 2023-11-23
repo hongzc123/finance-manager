@@ -1,6 +1,6 @@
 import { CONFIRM } from '@/conf'
 
-function confirmFn({msg = '是否确定该操作', title = '提示'}) {
+export function confirmFn({msg = '是否确定该操作', title = '提示'}) {
     return this.$confirm(msg, title, {
         confirmButtonText: '确定',
         cancelButtonText: '取消'

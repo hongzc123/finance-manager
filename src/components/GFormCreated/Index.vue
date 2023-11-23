@@ -156,7 +156,7 @@ export default {
     let attrs = {
       ...this.$attrs,
       model: this.form,
-      "label-width": this.conf["label-width"] ?? "80px",
+      "label-width": (this.conf["label-width"] || 80) + "px",
     };
     return (
       <div>

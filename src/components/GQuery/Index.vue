@@ -1,7 +1,13 @@
 <template>
   <el-row>
     <el-col :span="hasBtn ? 18 : 24">
-      <el-input type="text" v-model="query" placeholder="请输入查询条件" @change="onChange"></el-input>
+      <el-input
+        type="text"
+        v-model="query"
+        placeholder="请输入查询条件"
+        clearable
+        @change="onChange"
+      ></el-input>
     </el-col>
 
     <el-col v-if="hasBtn" :span="6">
@@ -16,18 +22,18 @@ export default {
   computed: {
     hasBtn() {
       return this.$scopedSlots.default;
-    }
+    },
   },
   data() {
     return {
-      query: ""
+      query: "",
     };
   },
   methods: {
     onChange() {
       this.$emit("change", this.query);
-    }
-  }
+    },
+  },
 };
 </script>
 

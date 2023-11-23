@@ -1,4 +1,4 @@
-import { columns, pager } from "./conf";
+import { pager } from "@/views/input-manager/conf";
 
 export default {
     data() {
@@ -6,7 +6,6 @@ export default {
             pager: {
                 ...pager // pageNo:1 pageSize:10
             },
-            columns,
             tableData: [],
         }
     },
