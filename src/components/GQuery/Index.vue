@@ -4,9 +4,8 @@
       <el-input
         type="text"
         v-model="query"
-        placeholder="请输入查询条件"
-        clearable
-        @change="onChange"
+        v-bind="$attrs"
+        @input="onChange"
       ></el-input>
     </el-col>
 
@@ -17,6 +16,8 @@
 </template>
 
 <script>
+import { debounce } from "@/utils";
+
 export default {
   name: "GQuery",
   computed: {
@@ -30,9 +31,12 @@ export default {
     };
   },
   methods: {
-    onChange() {
+    // onChange() {
+    //   this.$emit("change", this.query);
+    // },
+    onChange: debounce(function () {
       this.$emit("change", this.query);
-    },
+    }, 500),
   },
 };
 </script>

@@ -14,10 +14,10 @@ export default {
   },
   methods: {
     async doCheck() {
-      console.log(this.$attrs);
-      console.log(this.$listeners);
+      //   console.log(this.$attrs);
+      //   console.log(this.$listeners);
       let res = await confirmFn.call(this, { msg: this.$attrs.msg });
-      console.log(res);
+      //   console.log(res);
       if (!res) return;
       let { click } = this.$listeners;
       click();

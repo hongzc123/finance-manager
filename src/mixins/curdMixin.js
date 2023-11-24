@@ -17,7 +17,10 @@ export default {
             this.loading = true;
             const res = await request({
                 ...this.checkOption().read, // url, method
-                params: this.pager
+                params: {
+                    ...this.pager,
+                    rows: undefined
+                }
             });
             this.loading = false;
             this.tableData = res.data.list;
@@ -30,6 +33,18 @@ export default {
             });
             await this.load();
             return res
+        },
+        async delete(id) {
+            let { del } = this.checkOption()
+            const res = await request({
+                ...del, // url, method
+                url: del.url + '/' + id
+            });
+            await this.load();
+            return res
         }
+    },
+    created() {
+        this.load();
     }
 }

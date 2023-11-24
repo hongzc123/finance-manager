@@ -3,7 +3,8 @@ import { CONFIRM } from '@/conf'
 export function confirmFn({msg = '是否确定该操作', title = '提示'}) {
     return this.$confirm(msg, title, {
         confirmButtonText: '确定',
-        cancelButtonText: '取消'
+        cancelButtonText: '取消',
+        type: 'warning'
     }).then(() => {
         console.log('确定')
         return true

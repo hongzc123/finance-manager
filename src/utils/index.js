@@ -129,6 +129,7 @@ export const deepClone = function deepClone(obj, functionNeedCopy) {
 }
 
 // 在一定时间只执行一次用户的操作，不满足 顺延时间
+// 在一定时间内连续操作，以最后一次为主
 export const debounce = function (fn, wait) {
     let timer;
     return function () {
@@ -136,6 +137,7 @@ export const debounce = function (fn, wait) {
         clearTimeout(timer)
         timer = setTimeout(() => {
             // 1秒后执行
+            // console.log(this, arguments)
             fn.call(this, arguments)
         }, wait);
     }

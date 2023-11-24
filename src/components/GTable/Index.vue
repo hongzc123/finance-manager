@@ -78,8 +78,10 @@ export default {
     },
     // 渲染特定列组件
     renderSpicalColumn(type) {
-      let attrs = { type, width: "55px" };
+      if (type === undefined) return null;
+      let attrs = { type, width: "55px", align: "center" };
       if (type === "selection") attrs["reserve-selection"] = true;
+      if (type === "index") attrs["type"] = "index";
       return <GColumn conf={attrs} />;
 
       switch (type) {
@@ -153,6 +155,8 @@ export default {
     ];
 
     const childrenScopedSlots = deepClone($scopedSlots);
+
+    console.log("渲染了...");
 
     return (
       <div>

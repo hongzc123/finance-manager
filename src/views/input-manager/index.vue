@@ -1,6 +1,11 @@
 <template>
   <div>
-    <GQuery style="margin-bottom: 20px" @change="changeQuery($event)">
+    <GQuery
+      style="margin-bottom: 20px"
+      placeholder="请输入查询条件"
+      clearable
+      @change="changeQuery($event)"
+    >
       <template #default="{ query }">
         <el-button
           style="margin-left: 20px"
@@ -27,11 +32,19 @@
         <el-button size="mini" type="primary" @click="showEdit(row)"
           >编辑</el-button
         >
-        <el-button size="mini" type="danger" @click="doDelete(row)"
-          >删除</el-button
+        <GNotifyBtn
+          size="mini"
+          type="danger"
+          msg="是否确定删除？"
+          @click="doDelete(row)"
+          >删除</GNotifyBtn
         >
-        <el-button size="mini" type="success" @click="doSubmit(row)"
-          >提交审核</el-button
+        <GNotifyBtn
+          size="mini"
+          type="success"
+          msg="是否确定提交？"
+          @click="doSubmit(row)"
+          >提交审核</GNotifyBtn
         >
       </template>
 
@@ -79,7 +92,9 @@
             <!-- <el-button type="primary" @click="onSave(form)">保存</el-button> -->
 
             <!-- 弹窗提示 2 -->
-            <GNotifyBtn type="primary" @click="onSave(form)">保存</GNotifyBtn>
+            <div style="margin: 0 auto">
+              <GNotifyBtn type="primary" @click="onSave(form)">保存</GNotifyBtn>
+            </div>
           </div>
         </template>
       </GFormCreated>
@@ -89,7 +104,7 @@
 
 <script>
 import { columns } from "./conf";
-import { getPersonList } from "@/api";
+import { getPersonList, doPersonSubmit } from "@/api";
 import pagerMixin from "@/mixins/pagerMixin";
 import curdMixin from "@/mixins/curdMixin";
 import { deepClone } from "@/utils";
@@ -123,9 +138,9 @@ export default {
           method: "get",
         },
         del: {
-          url: "/loan/list/",
-          addStr: "id",
+          url: "/loan/delete",
           method: "delete",
+          loading: true,
         },
         update: {
           url: "/loan/update",
@@ -146,7 +161,7 @@ export default {
     showEdit(row) {
       // const selection = this.$refs.table.getSelection();
       // console.log(selection);
-      console.log(row);
+      // console.log(row);
 
       this.visible = true;
       this.rowData = deepClone(row);
@@ -183,18 +198,20 @@ export default {
       const res = await this.update(this.rowData);
       console.log("update res", res);
     },
-    doDelete(v) {
-      console.log(v);
+    doDelete(data) {
+      // console.log(data);
+      this.delete(data.id);
     },
-    doSubmit(v) {
-      console.log(v);
+    async doSubmit(data) {
+      // console.log(data);
+      const { data: e } = await doPersonSubmit(data.id);
+      // console.log(e, e.code);
+      if (e.code !== 20000) return;
+      await this.load();
     },
     selectionChange(e) {
       console.log("selectionChange", e);
     },
-  },
-  created() {
-    this.load();
   },
 };
 </script>

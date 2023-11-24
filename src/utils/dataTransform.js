@@ -2,7 +2,11 @@ export function transfer(data){
     // 如果是请求文件
     if (data instanceof Blob)return data;
     // 字符串才解析
-    let resData = JSON.parse(data);
+    try {
+      var resData = JSON.parse(data);
+    } catch(e) {
+      return data;
+    }
     // 兼容menu 不能向下处理
     if (Array.isArray(resData))return resData;
 
