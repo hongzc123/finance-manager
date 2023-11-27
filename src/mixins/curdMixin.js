@@ -1,6 +1,12 @@
 import { request } from '@/utils/request'
 
 export default {
+    data() {
+        return {
+            // 在data中加上loading，具备响应式，让框架知道需要更新
+            loading: false
+        }
+    },
     // 混入时生命周期函数都会执行，组件后执行
     // 函数：完全覆盖
     methods: {
@@ -40,6 +46,14 @@ export default {
                 ...del, // url, method
                 url: del.url + '/' + id
             });
+            await this.load();
+            return res
+        },
+        async create(id) {
+            const res = await request({
+                ...this.checkOption().create, // url, method
+                data: { id }
+            })
             await this.load();
             return res
         }

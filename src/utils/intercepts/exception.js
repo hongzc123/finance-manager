@@ -11,10 +11,11 @@ export const businessFn = response => {
                 message: response?.data?.data
             })
         } else {
-            if (response?.data?.data?.info) {
+            if (response?.data?.data?.info || typeof response?.data?.data === 'string') {
+                let message = response?.data?.data?.info || response?.data?.data
                 Notification.success({
                     title: "操作成功",
-                    message: response?.data?.data?.info
+                    message
                 })
             }
         }

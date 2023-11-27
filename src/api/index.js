@@ -50,3 +50,13 @@ export const doReject = id =>{
         appId: id
     })
 }
+
+// 园区详情 -下载备案文件
+export const downloadFile = id => {
+    return request.get(`/contract/download?id=${id}`)
+}
+
+export const downloadFileByUrl = url => {
+    return request.get(url, { responseType: 'blob' })
+}
+

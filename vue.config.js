@@ -24,7 +24,8 @@ module.exports = defineConfig({
       // 应用内的Ajax访问到了/jindu 则算命中，按照当前规则做代理
       '/jindu': {
         // target: 'http://jinduedu.net:5004',
-        target: 'http://118.25.146.173:5004',
+        // target: 'http://118.25.146.173:5004',
+        target: process.env.VUE_APP_URL,
         // 用于重写 URL 路径。它允许你将特定的路径映射到不同的路径
         // pathRewrite: {
         //   '^/jindu': '/api'

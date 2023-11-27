@@ -186,3 +186,15 @@ export async function downloadByTag(blob, fileName) {
     // 6. a删除DOM
     document.body.removeChild(tagA);
 }
+
+// 使用地址创建a标签下载
+export function downloadByUrl(url) {
+    const a = document.createElement('a')
+    const start = url.lastIndexOf('/')
+    const fileName = url.substring(start+1, url.length)
+    a.href = url
+    a.download = fileName
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+}

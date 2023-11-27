@@ -37,22 +37,22 @@
     </GTable>
 
     <!-- 弹出编辑框 -->
-    <!-- <el-dialog
+    <el-dialog
       title="救助情况-查看详情"
-      width="30%"
+      width="50%"
       :visible.sync="visible"
       destroy-on-close
     >
-      <GFormCreated :key="Math.random()" :conf="editConf">
-        <template #default="form">
+      <GFormCreated v-if="viewConf" :key="Math.random()" :conf="viewConf">
+        <template #default>
           <div style="display: flex; align-items: center; width: 100%">
             <div style="margin: 0 auto">
-              <GNotifyBtn type="primary" @click="onSave(form)">保存</GNotifyBtn>
+              <el-button @click="cancel">取消</el-button>
             </div>
           </div>
         </template>
       </GFormCreated>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
@@ -61,6 +61,7 @@ import curdMixin from "@/mixins/curdMixin";
 import pagerMixin from "@/mixins/pagerMixin";
 import { columns, conf } from "./conf";
 import { showDetail, doPass, doReject } from "@/api";
+import { getValueFormConf } from "@/utils/convert";
 
 export default {
   mixins: [curdMixin, pagerMixin],
@@ -71,7 +72,8 @@ export default {
         colType: "index",
       },
       columns,
-      conf,
+      visible: false,
+      viewConf: null,
     };
   },
   methods: {
@@ -85,7 +87,16 @@ export default {
       };
     },
     async showView(id) {
-      await showDetail(id);
+      this.visible = true;
+      const res = await showDetail(id);
+      this.viewConf = {
+        ...conf,
+        items: getValueFormConf(conf.items, res.data.data),
+      };
+      console.log("viewConf", this.viewConf);
+    },
+    cancel() {
+      this.visible = false;
     },
     async passCase(id) {
       await doPass(id);
