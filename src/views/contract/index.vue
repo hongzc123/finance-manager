@@ -1,11 +1,6 @@
 <template>
   <div>
-    <GQuery
-      style="margin-bottom: 20px"
-      placeholder="请输入查询条件"
-      clearable
-      @change="changeQuery"
-    />
+    <GQuery style="margin-bottom: 20px" placeholder="请输入查询条件" clearable @change="changeQuery" />
 
     <GTable
       :data="tableData"
@@ -15,9 +10,11 @@
       @current-change="currentChange"
     >
       <template #status="{ row }">
-        <el-tag :type="row.status | statusColor" size="normal">{{
+        <el-tag :type="row.status | statusColor" size="normal">
+          {{
           row.status | status
-        }}</el-tag>
+          }}
+        </el-tag>
       </template>
       <template #operation="{ row }">
         <GNotifyBtn
@@ -25,15 +22,13 @@
           msg="是否确认生成备案文件？"
           :disabled="row.status !== 5"
           @click="doCreate(row.id)"
-          >生成备案文件</GNotifyBtn
-        >
+        >生成备案文件</GNotifyBtn>
         <GNotifyBtn
           type="success"
           msg="是否下载生成备案文件？"
           :disabled="row.status !== 7"
           @click="doDownload(row.id)"
-          >下载备案文件</GNotifyBtn
-        >
+        >下载备案文件</GNotifyBtn>
       </template>
     </GTable>
   </div>
@@ -51,7 +46,7 @@ export default {
   mixins: [curdMixin, pagerMinxin],
   data() {
     return {
-      columns,
+      columns
     };
   },
   methods: {
@@ -59,17 +54,16 @@ export default {
       return {
         read: {
           url: "/contract/list",
-          method: "get",
+          method: "get"
         },
         create: {
           url: "/contract/createFile",
-          method: "post",
-        },
+          method: "post"
+        }
       };
     },
     doCreate(id) {
       const res = this.create(id);
-      console.log(res);
     },
     async doDownload(id) {
       const { data } = await downloadFile(id);
@@ -82,8 +76,8 @@ export default {
       const res = await downloadFileByUrl(data.data.url.replace("/api", ""));
       console.log(res);
       downloadByTag(res.data, "备案文件" + id + ".docx");
-    },
-  },
+    }
+  }
 };
 </script>
 

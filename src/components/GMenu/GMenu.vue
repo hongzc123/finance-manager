@@ -2,6 +2,7 @@
   <div>
     <el-menu
       class="el-menu-vertical-demo"
+      :default-active="activeUrl"
       :attrs="$attrs"
       v-on="$listeners"
       router
@@ -14,12 +15,17 @@
 <script>
 export default {
   name: "GMenu",
+  computed: {
+    activeUrl() {
+      return this.$route.path;
+    }
+  },
   props: {
     routeData: {
       type: Array,
       default: [],
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {};
@@ -27,7 +33,7 @@ export default {
   created() {
     // console.log("$attrs", this.$attrs);
     // console.log("$listeners", this.$listeners);
-  },
+  }
 };
 </script>
 

@@ -1,11 +1,6 @@
 <template>
   <div>
-    <GQuery
-      style="margin-bottom: 20px"
-      placeholder="请输入查询条件"
-      clearable
-      @change="changeQuery"
-    />
+    <GQuery style="margin-bottom: 20px" placeholder="请输入查询条件" clearable @change="changeQuery" />
 
     <GTable
       :data="showList"
@@ -13,8 +8,7 @@
       :pager="pager"
       @size-change="sizeChange"
       @current-change="currentChange"
-    >
-    </GTable>
+    ></GTable>
   </div>
 </template>
 
@@ -32,7 +26,7 @@ export default {
       start: 0,
       end: viewCount,
       viewCount,
-      query: "",
+      query: ""
     };
   },
   computed: {
@@ -40,23 +34,23 @@ export default {
       this.end = this.start + this.viewCount;
       if (this.query.trim() !== "") {
         // 查询
-        const collection = this.tableData.filter((item) => {
+        const collection = this.tableData.filter(item => {
           return item.account.includes(this.query);
         });
         this.pager.rows = collection.length;
         return collection.slice(this.start, this.end);
       }
-      console.log(this.start, this.end, this.pager.rows);
+      // console.log(this.start, this.end, this.pager.rows);
       return this.tableData.slice(this.start, this.end);
-    },
+    }
   },
   methods: {
     getOption() {
       return {
         read: {
           url: "/user/list?type=new",
-          method: "get",
-        },
+          method: "get"
+        }
       };
     },
     sizeChange(v) {
@@ -74,8 +68,8 @@ export default {
       this.query = val;
       this.start = 0;
       this.pager.rows = this.tableData.length;
-    },
-  },
+    }
+  }
 };
 </script>
 

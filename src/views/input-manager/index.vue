@@ -12,8 +12,7 @@
           type="primary"
           size="default"
           @click="changeQuery(query)"
-          >查询</el-button
-        >
+        >查询</el-button>
       </template>
     </GQuery>
 
@@ -29,46 +28,32 @@
       @selection-change="selectionChange"
     >
       <template #operation="{ row }">
-        <el-button size="mini" type="primary" @click="showEdit(row)"
-          >编辑</el-button
-        >
-        <GNotifyBtn
-          size="mini"
-          type="danger"
-          msg="是否确定删除？"
-          @click="doDelete(row)"
-          >删除</GNotifyBtn
-        >
-        <GNotifyBtn
-          size="mini"
-          type="success"
-          msg="是否确定提交？"
-          @click="doSubmit(row)"
-          >提交审核</GNotifyBtn
-        >
+        <el-button size="mini" type="primary" @click="showEdit(row)">编辑</el-button>
+        <GNotifyBtn size="mini" type="danger" msg="是否确定删除？" @click="doDelete(row)">删除</GNotifyBtn>
+        <GNotifyBtn size="mini" type="success" msg="是否确定提交？" @click="doSubmit(row)">提交审核</GNotifyBtn>
       </template>
 
       <!-- <template #birthday="{ row }">
         {{ row.birthday | convertDate }}
-      </template> -->
+      </template>-->
 
       <!-- <template #status="scoped">
         <el-tag :type="scoped.row.status | statusColor">{{
           scoped.row.status | status
         }}</el-tag>
-      </template> -->
+      </template>-->
 
       <template #status="scoped">
-        <el-tag :type="scoped.row.status | common('statusColor')">{{
+        <el-tag :type="scoped.row.status | common('statusColor')">
+          {{
           scoped.row.status | common("status")
-        }}</el-tag>
+          }}
+        </el-tag>
       </template>
 
       <!-- append插槽 -->
       <template #append>
-        <h2
-          style="display: flex; justify-content: space-between; padding: 10px"
-        >
+        <h2 style="display: flex; justify-content: space-between; padding: 10px">
           <span>行尾</span>
           <span>合计: 123</span>
         </h2>
@@ -76,12 +61,7 @@
     </GTable>
 
     <!-- 弹出编辑框 -->
-    <el-dialog
-      title="案件申请-编辑"
-      width="30%"
-      :visible.sync="visible"
-      destroy-on-close
-    >
+    <el-dialog title="案件申请-编辑" width="30%" :visible.sync="visible" destroy-on-close>
       <!-- 
         切换visible的时候，会触发dom的diff，会对比原来的GFormCreator和新的GFormCreator
         如果没有给变化的key，就会就地复用元素
@@ -117,17 +97,17 @@ export default {
     return {
       tableAttrs: {
         stripe: false,
-        colType: "selection",
+        colType: "selection"
       },
       columns,
       editConf: null,
-      visible: false,
+      visible: false
     };
   },
   computed: {
     showList() {
       return this.tableData;
-    },
+    }
   },
   methods: {
     // 复写crud方法
@@ -135,22 +115,21 @@ export default {
       return {
         read: {
           url: "/loan/list",
-          method: "get",
+          method: "get"
         },
         del: {
           url: "/loan/delete",
           method: "delete",
-          loading: true,
+          loading: true
         },
         update: {
           url: "/loan/update",
           method: "put",
-          loading: true,
-        },
+          loading: true
+        }
       };
     },
     handleChange(q) {
-      console.log("handleChange", q);
       this.pager.name = q;
       this.pager.pageNo = 1;
       this.load();
@@ -172,17 +151,17 @@ export default {
               label: "姓名",
               key: "name",
               value: row.name,
-              type: "text",
+              type: "text"
             },
             {
               label: "性别",
               key: "sex",
               value: row.sex,
               type: "select",
-              options: sexOptions,
-            },
-          ],
-        ],
+              options: sexOptions
+            }
+          ]
+        ]
       };
     },
     async onSave(data) {
@@ -199,20 +178,17 @@ export default {
       console.log("update res", res);
     },
     doDelete(data) {
-      // console.log(data);
       this.delete(data.id);
     },
     async doSubmit(data) {
-      // console.log(data);
       const { data: e } = await doPersonSubmit(data.id);
-      // console.log(e, e.code);
       if (e.code !== 20000) return;
       await this.load();
     },
     selectionChange(e) {
       console.log("selectionChange", e);
-    },
-  },
+    }
+  }
 };
 </script>
 

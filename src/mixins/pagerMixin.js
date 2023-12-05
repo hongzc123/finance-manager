@@ -1,6 +1,12 @@
 import { pager } from "@/views/input-manager/conf";
 
 export default {
+    created() {
+        console.log('组件被创建')
+    },
+    beforeDestroy() {
+        console.log('组件被销毁')
+    },
     data() {
         return {
             pager: {
@@ -12,7 +18,6 @@ export default {
     },
     methods: {
         changeQuery(query) {
-            console.log("changeQuery", query);
             // this.pager.name = query; // name不需要实时在页面上更新的，无需$set
             this.$set(this.pager, 'name', query)
             this.pager.pageNo = 1;
@@ -25,13 +30,11 @@ export default {
             this.load();
         },
         sizeChange(v) {
-            // console.log("sizeChange", v);
             this.pager.pageSize = v;
             this.pager.pageNo = 1;
             this.load();
         },
         currentChange(v) {
-            // console.log("currentChange", v);
             this.pager.pageNo = v;
             this.load();
         },

@@ -7,14 +7,25 @@
       <el-container>
         <el-header>
           <GBreadcrumb />
-          <GDropdown
-            :dropdownList="commandArr"
-            :title="user.account"
-            @command="onCommand"
-          />
+          <GDropdown :dropdownList="commandArr" :title="user.account" @command="onCommand" />
         </el-header>
         <el-main>
-          <router-view />
+          {{nameTags}}
+          <el-tag
+            style="margin-bottom: 20px;margin-right: 5px;"
+            v-for="(tag, i) in tags"
+            :key="i"
+            size="normal"
+            closable
+            @close="closeTag(tag)"
+            @click="goTag(tag)"
+          >{{tag.meta.title}}</el-tag>
+
+          <transition mode="out-in" name="fade">
+            <keep-alive :include="nameTags">
+              <router-view />
+            </keep-alive>
+          </transition>
         </el-main>
         <!-- <el-footer>Footer</el-footer> -->
       </el-container>
@@ -31,10 +42,18 @@ import { resetRoute } from "@/router";
 import { logout } from "@/api";
 
 export default {
+  computed: {
+    tags() {
+      return this.$store.getters.getTags;
+    },
+    nameTags() {
+      return this.tags.map(tag => tag.name);
+    }
+  },
   data() {
     return {
       commandArr: [{ command: "exit", title: "退出", icon: "el-icon-plus" }],
-      user: null,
+      user: null
     };
   },
   created() {
@@ -78,7 +97,14 @@ export default {
           break;
       }
     },
-  },
+    closeTag(tag) {
+      this.$store.commit("removeTag", tag);
+    },
+    goTag(tag) {
+      console.log(tag);
+      this.$router.push(tag);
+    }
+  }
 };
 </script>
 
@@ -111,4 +137,12 @@ export default {
 .el-main {
   background-color: #e9eef3;
 }
-</style>@/utils/intercepts/retry
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { isLogin } from '@/utils'
 import store from '@/store'
-import { loadMenuData } from '@/api'
+import { loadMenuData, loadMenuDataForLocal } from '@/api'
 import Layout from '@/views/Layout/index.vue';
 import NotFound from '@/views/404'
 
@@ -50,7 +50,17 @@ function asyncRoutesHandler(routes) {
       // 按步骤告知webpack文件的解析路径，让其将.vue文件转化成js文件的函数
       const filePath = route.component; // (变量的声明会触发webpack文件编译，否则会忽略，最终获得undefined)
       // 懒加载配置
-      route.component = () => import(`../views/${filePath}.vue`)
+      // route.component = () => import(`../views/${filePath}.vue`)
+      console.log(route)
+      route.component = () => new Promise((resolve, reject) => {
+        // 异步中间层
+        import(`../views/${filePath}.vue`)
+          .then(module => {
+            module.default.name = route.name
+            resolve(module)
+          })
+          .catch(reject)
+      })
     }
     // 处理子路由
     if (route.children) {
@@ -65,7 +75,8 @@ function asyncRoutesHandler(routes) {
  * 请求路由并生成路由
  */
 async function loadMenu(to, next) {
-  let res = await loadMenuData()
+  let res = await loadMenuData();   // 线上代码 
+  // let res = await loadMenuDataForLocal();  // 本地开发
   // console.log('路由数据：', res)
 
   // 存储store
@@ -125,7 +136,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   // 当前匹配的路由
-  // console.log('router after to:', to)
+  console.log('router after to:', to)
   // 改变document.title
   // document.title = to.meta.title || ''
 
@@ -133,15 +144,17 @@ router.afterEach((to, from) => {
   let str = '反诈'
   for (let i = 0; i < to.matched.length; i++) {
     let route = to.matched[i];
-    let prev = to.matched[i-1];
+    let prev = to.matched[i - 1];
     // 如果上个合这个一样则跳过
-    if (prev && prev?.meta?.title === route?.meta?.title)continue;
+    if (prev && prev?.meta?.title === route?.meta?.title) continue;
 
     if (route?.meta?.title) {
       str += '-' + route?.meta?.title
     }
   }
   document.title = str;
+
+  store.commit('addTag', { ...to });
 })
 
 

@@ -5,9 +5,7 @@
     <GFormCreated ref="form" :conf="config">
       <template #default="scoped">
         <div style="margin: 10px">
-          <el-button type="primary" @click="onSubmit2(scoped)"
-            >自定义插槽按钮提交</el-button
-          >
+          <el-button type="primary" @click="onSubmit2(scoped)">自定义插槽按钮提交</el-button>
           <el-button @click="reset">自定义插槽按钮重置</el-button>
         </div>
       </template>
@@ -50,7 +48,7 @@ let mockData = {
   contact2_phone: "9",
   contact2_dep: "10",
   contact2_pos: "11",
-  remark: "12",
+  remark: "12"
 };
 
 export default {
@@ -60,7 +58,7 @@ export default {
       // config: formConfig,
       // config: formConfig2,
       config: myConfig,
-      prefix: "￥",
+      prefix: "￥"
     };
   },
   created() {
@@ -88,7 +86,6 @@ export default {
       // });
 
       if (await this[CONFIRM]({ msg: "是否确定添加" })) {
-        console.log("确定添加");
         const { data } = await createUser(mockData);
         console.log(data);
         if (data.code === SUCCESS) {
@@ -101,8 +98,8 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
-    },
-  },
+    }
+  }
 };
 </script>
 
