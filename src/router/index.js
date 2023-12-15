@@ -154,7 +154,7 @@ router.afterEach((to, from) => {
   }
   document.title = str;
 
-  store.commit('addTag', { ...to });
+  // store.commit('addTag', { ...to });
 })
 
 

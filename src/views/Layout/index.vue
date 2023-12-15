@@ -10,7 +10,7 @@
           <GDropdown :dropdownList="commandArr" :title="user.account" @command="onCommand" />
         </el-header>
         <el-main>
-          {{nameTags}}
+          <!-- {{nameTags}}
           <el-tag
             style="margin-bottom: 20px;margin-right: 5px;"
             v-for="(tag, i) in tags"
@@ -19,10 +19,12 @@
             closable
             @close="closeTag(tag)"
             @click="goTag(tag)"
-          >{{tag.meta.title}}</el-tag>
+          >{{tag.meta.title}}</el-tag>-->
+
+          <GCacheTag v-model="cached" />
 
           <transition mode="out-in" name="fade">
-            <keep-alive :include="nameTags">
+            <keep-alive :include="cached">
               <router-view />
             </keep-alive>
           </transition>
@@ -53,7 +55,8 @@ export default {
   data() {
     return {
       commandArr: [{ command: "exit", title: "退出", icon: "el-icon-plus" }],
-      user: null
+      user: null,
+      cached: []
     };
   },
   created() {
