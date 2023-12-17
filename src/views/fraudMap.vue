@@ -6,7 +6,8 @@
 import * as echarts from "echarts";
 // 加载插件
 import "echarts-gl";
-import { geoCoordMap, geoJson } from "@/conf/map";
+import Axios from "axios";
+// import { geoCoordMap, geoJson } from "@/conf/map";
 
 function rodamData() {
   let name = "随机点" + Math.random().toFixed(5) * 100000;
@@ -25,35 +26,33 @@ function rodamData() {
   };
 }
 
-function convertData(data) {
-  var res = [];
-  for (var i = 0; i < data.length; i++) {
-    var geoCoord = geoCoordMap[data[i].name];
-    if (geoCoord) {
-      res.push({
-        name: data[i].name,
-        value: geoCoord.concat(data[i].value)
-      });
-    }
-  }
-  // console.log(res)
-  return res;
-}
-
 export default {
   // name: "telecom-areas-map",
   data() {
     return {};
   },
-  mounted() {
-    let el = document.querySelector("#echarts-map");
-    this.myChart = echarts.init(el);
-    this.getBaseTexture();
-    this.drawEarth();
+  async mounted() {
+    let prefixUrl = "";
+    // 判断开发和生产环境
+    if (process.env.VUE_APP_ENV === "production") {
+      prefixUrl = "/showview";
+    }
+    let res = await Axios.get(prefixUrl + "/map.json");
+
+    this.geoJson = res.data.geoJson;
+    this.geoCoordMap = res.data.geoCoordMap;
+
+    this.initMap();
   },
   methods: {
+    initMap() {
+      let el = document.querySelector("#echarts-map");
+      this.myChart = echarts.init(el);
+      this.getBaseTexture();
+      this.drawEarth();
+    },
     getBaseTexture() {
-      echarts.registerMap("world", geoJson);
+      echarts.registerMap("world", this.geoJson);
       let canvas = document.createElement("canvas");
       this.baseTexture = echarts.init(canvas, null, {
         width: 4096,
@@ -117,8 +116,8 @@ export default {
               show: false,
               formatter: "{b}"
             },
-            data: convertData(
-              Object.keys(geoCoordMap).map(cityStr => {
+            data: this.convertData(
+              Object.keys(this.geoCoordMap).map(cityStr => {
                 return {
                   name: cityStr,
                   value: (Math.random() * 300).toFixed(2)
@@ -157,6 +156,20 @@ export default {
 
       this.myChart.clear();
       this.myChart.setOption(option, true);
+    },
+    convertData(data) {
+      var res = [];
+      for (var i = 0; i < data.length; i++) {
+        var geoCoord = this.geoCoordMap[data[i].name];
+        if (geoCoord) {
+          res.push({
+            name: data[i].name,
+            value: geoCoord.concat(data[i].value)
+          });
+        }
+      }
+      // console.log(res)
+      return res;
     }
   }
 };
