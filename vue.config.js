@@ -4,13 +4,52 @@ const { defineConfig } = require('@vue/cli-service')
 const isProduction = process.env.NODE_ENV === 'production';
 const TerserPlugin = require('terser-webpack-plugin'); // 去除console.log&&console.warn 避免占用内存
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // 查看更多优化
+const CompressionPlugin = require('compression-webpack-plugin')
+let cdn = {
+  build: {
+    js: [
+      "/cdn/vue.min.js",
+      "/cdn/vuex.min.js",
+      '/cdn/axios.min.js',
+      '/cdn/vue-router.min.js',
+      '/cdn/echarts.min.js'
+    ]
+  },
+  dev: {
+    js: [],
+    css: []
+  }
+}
 
-let cliConfig = {}
+let cliConfig = {
+  chainWebpack(config) {
+    // html-webpack-plugin
+    config.plugin('html').tap(args => {
+      if (isProduction) {
+        args[0].myCdn = cdn.build;
+      } else {
+        args[0].myCdn = cdn.dev;
+      }
+      return args;
+    })
+  }
+}
+
+// 对webpack的插件进行修改
 if (isProduction) {
+  cliConfig.publicPath = '/showview';
   // 不需要生产环境打包后能查看源码，设为false
   cliConfig.productionSourceMap = false
   // 插件配置
   cliConfig.configureWebpack = {
+    externals: {
+      // from 'xxx' :  浏览器全局对象名
+      'vue-router': 'VueRouter',
+      'vue': 'Vue',
+      'vuex': 'Vuex',
+      'axios': 'axios',
+      echarts: 'echarts',
+    },
     plugins: [
       new TerserPlugin({
         terserOptions: {
@@ -19,7 +58,11 @@ if (isProduction) {
           }
         }
       }),
-      new BundleAnalyzerPlugin()
+      new BundleAnalyzerPlugin(),
+      new CompressionPlugin({
+        threshold: 8192,
+        test: /\.js|css|json(\?.*)?$/i,
+      })
     ]
   }
 } else {

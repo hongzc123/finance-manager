@@ -1,0 +1,81 @@
+[
+    {
+      "nonRenderChild": true,
+      "path": "/dashboard",
+      "meta": {
+        "title": "首页",
+        "icon": "el-icon-s-home"  
+      },
+      "redirect": { "name": "dashboard" },
+      "component": "Layout",
+      "children": [
+        { "meta": {
+        "title": "首页",
+        "icon": "el-icon-s-home"  
+      },"name": "dashboard", "path": "/dashboard", "component": "dashboard" }
+      ]
+    },
+    {
+      "name":"telecom-areas",
+      "path": "/telecom-areas",
+      "component": "Layout",
+      "meta": {
+        "title": "电信诈骗总览",
+        "icon": "el-icon-location"  
+      },
+      "children": [
+        { "name":"telecom-areas-map", "path": "/telecom-areas/map", "component": "fraudMap", "meta": { "title": "实时电诈分布" } },
+        { "path": "/telecom-areas/details", "component": "contract/index", "meta": { "title": "园区详情" } }
+      ]
+    },
+    {
+      "name":"scam-persons",
+      "path": "/scam-persons",
+      "component": "Layout",
+      "meta": {
+        "title": "诈骗人员",
+        "icon": "el-icon-user"  
+      },
+      "children": [
+        { "name":"scam-persons-list","path": "/scam-persons/list", "component": "input-manager/index", "meta": { "title": "人员信息列表" } },
+        { "name":"scam-persons-add","path": "/scam-persons/add", "component": "loan-input/index", "meta": { "title": "诈骗人员信息录入" } }
+      ]
+    },
+    {
+      "name":"help-tracking",
+      "path": "/help-tracking",
+      "component": "Layout",
+      "meta": {
+        "title": "救助情况跟踪",
+        "icon": "el-icon-medal"  
+      },
+      "children": [
+        { "path": "/help-tracking/list", "component": "loan-approve/first", "meta": { "title": "救助情况列表" } }
+      ]
+    },
+    {
+      "name":"data-analysis",
+      "path": "/data-analysis",
+      "component": "Layout",
+      "meta": {
+        "title": "数据分析",
+        "icon": "el-icon-pie-chart"  
+      },
+      "children": [
+        { "name":"data-analysis-trends","path": "/data-analysis/trends", "component": "dataTrends", "meta": { "title": "案件趋势分析" } }
+      ]
+    },
+    {
+      "name":"admin",
+      "path": "/admin",
+      "component": "Layout",
+      "meta": {
+        "title": "管理员控制台",
+        "icon": "el-icon-setting"  
+      },
+      "children": [
+        {"name":"user-management", "path": "/admin/user-management", "component": "permission/list", "meta": { "title": "用户管理" } }
+      ]
+    }
+  ]
+  
